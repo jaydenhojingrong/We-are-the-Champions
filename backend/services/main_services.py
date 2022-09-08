@@ -38,19 +38,20 @@ class main_services():
             record_match(all_teams_dict, result_data)
         return all_teams_dict
 
-    def tabulate_points(self, all_teams_dict):
+    def tabulate_points(self, all_teams_dict, win_points, draw_points, lose__points):
         
         # create a new dict to store group as keys and points as value in an array
         # for each key in all_teams_dict
         # accumulate points.. wins = points + 3 etc
-        
+
         points_by_group = dict()
         for group in all_teams_dict:
             for team_record in all_teams_dict[group]:
-                team_points = dict()
                 points = int()
-                points += (all_teams_dict[group][team_record].draws)
-                points += (all_teams_dict[group][team_record].wins * 3)
+                
+                points += (all_teams_dict[group][team_record].wins * win_points)
+                points += (all_teams_dict[group][team_record].draws * draw_points)
+                points += (all_teams_dict[group][team_record].draws * lose__points)
             
                 if group in points_by_group:
                     if points in points_by_group[group]:
@@ -62,9 +63,53 @@ class main_services():
                     points_by_group[group] = dict()
                     points_by_group[group][points] = list()
                     points_by_group[group][points].append(all_teams_dict[group][team_record].team.name)
-                    
+        # print(points_by_group)
         return points_by_group
                 
+    def get_rankings(self, all_teams_dict, points_by_group):
+
+        # put inside a dict where key is the group, value is the sorted list by ranking (desc)
+        ranking_by_group = dict()
+        
+        for group in points_by_group:
+            for points, team_names in sorted(points_by_group[group].items(), reverse=True):
+                if len(team_names) > 1:
+                    team_names = handle_teams_with_same_points(all_teams_dict, team_names, group)
+
+                if group in ranking_by_group:
+                    ranking_by_group[group].extend(team_names)
+                else:
+                    ranking_by_group[group] = list()
+                    ranking_by_group[group].extend(team_names)
+        
+        return ranking_by_group
+
+
+def handle_teams_with_same_points(all_teams_dict, team_names, group):
+    # compare goals
+    all_goals = dict()
+    new_rankings = list()
+    for team in team_names:
+        if all_teams_dict[group][team].goals in all_goals:
+            all_goals[all_teams_dict[group][team].goals].append(team)
+        else:
+            all_goals[all_teams_dict[group][team].goals] = list()
+            all_goals[all_teams_dict[group][team].goals].append(team)
+
+    for goals, team_names in sorted(all_goals.items(), reverse=True):
+        if len(team_names) > 1:
+            pass
+            handle_teams_with_same_points_and_goals(all_teams_dict, team_names, group)
+        new_rankings.append(team_names[0])
+    return new_rankings
+
+def handle_teams_with_same_points_and_goals(all_teams_dict, team_names, group):
+    # compare recalculated score
+    pass
+
+def handle_teams_with_same_points_and_goals_and_new_points(all_teams_dict, team_names, group):
+    # compare register date
+    pass
 
 def record_match(all_teams_dict, result_data):
     team1 = result_data[0]
@@ -163,7 +208,8 @@ teamJ teamL 0 3
 teamK teamL 0 0"""
     all_teams_dict = obj1.enter_result(all_teams_dict, match_result)
 
-    points_by_group = obj1.tabulate_points(all_teams_dict)
-    print(points_by_group)
+    points_by_group = obj1.tabulate_points(all_teams_dict, 3, 1, 0)
+    ranking_by_group = obj1.get_rankings(all_teams_dict, points_by_group)
+    print(ranking_by_group)
 
     
