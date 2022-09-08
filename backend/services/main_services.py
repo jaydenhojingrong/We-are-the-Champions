@@ -37,7 +37,7 @@ class main_services():
             record_match(all_teams_dict, result_data)
         return all_teams_dict
 
-    def tabulate_points(self, all_teams_dict, win_points = 3, draw_points = 1, lose__points = 0):
+    def tabulate_points(self, all_teams_dict):
 
         # create a new dict to store group as keys and points as value in an array
         # for each key in all_teams_dict
@@ -46,12 +46,8 @@ class main_services():
         points_by_group = dict()
         for group in all_teams_dict:
             for team_record in all_teams_dict[group]:
-                points = int()
-                
-                points += (all_teams_dict[group][team_record].wins * win_points)
-                points += (all_teams_dict[group][team_record].draws * draw_points)
-                points += (all_teams_dict[group][team_record].losts * lose__points)
-            
+                points = points_for_team(all_teams_dict[group][team_record])
+
                 if group in points_by_group:
                     if points not in points_by_group[group]:
                         points_by_group[group][points] = list()
@@ -75,20 +71,27 @@ class main_services():
                 if group not in ranking_by_group:
                     ranking_by_group[group] = list()
                 ranking_by_group[group].extend(team_names)
-        
+
         return ranking_by_group
 
+
+def points_for_team(team_name, win_points = 3, draw_points = 1, lose__points = 0):
+    points = int()
+
+    points += (team_name.wins * win_points)
+    points += (team_name.draws * draw_points)
+    points += (team_name.losts * lose__points)
+
+    return points
 
 def handle_teams_with_same_points(all_teams_dict, team_names, group):
     # compare goals
     all_goals = dict()
     new_rankings = list()
     for team in team_names:
-        if all_teams_dict[group][team].goals in all_goals:
-            all_goals[all_teams_dict[group][team].goals].append(team)
-        else:
+        if all_teams_dict[group][team].goals not in all_goals:
             all_goals[all_teams_dict[group][team].goals] = list()
-            all_goals[all_teams_dict[group][team].goals].append(team)
+        all_goals[all_teams_dict[group][team].goals].append(team)
 
     for goals, team_names in sorted(all_goals.items(), reverse=True):
         if len(team_names) > 1:
@@ -104,23 +107,17 @@ def handle_teams_with_same_points_and_goals(all_teams_dict, team_names, group):
     teams_by_new_points = dict()
     service_obj = main_services()
 
-    # change point system
-    points_by_group = service_obj.tabulate_points(new_all_teams_dict, 5, 3, 1)
-
     # extract only the teams that we are interested in
     for interested_team in team_names:
-        for points, new_team_names in points_by_group[group].items():
-            for new_team in new_team_names:
-                if new_team == interested_team:
-                    if points in teams_by_new_points:
-                        teams_by_new_points[points].append(interested_team)
-                    else:
-                        teams_by_new_points[points] = list()
-                        teams_by_new_points[points].append(interested_team)
-    
+        # calculate points for team with new point system
+        points = points_for_team(all_teams_dict[group][interested_team], 5, 3, 1)
+
+        if points not in teams_by_new_points:
+            teams_by_new_points[points] = list()
+        teams_by_new_points[points].append(interested_team)
+
     for points, team_names in sorted(teams_by_new_points.items(), reverse=True):
         if len(team_names) > 1:
-            # pass
             team_names = handle_teams_with_same_points_and_goals_and_new_points(all_teams_dict, team_names, group)
         new_rankings.extend(team_names)
 
@@ -136,13 +133,13 @@ def handle_teams_with_same_points_and_goals_and_new_points(all_teams_dict, team_
     new_rankings = list()
     teams_by_registered_date = dict()
     for interested_team in team_names:
-        date_registered = (all_teams_dict[group][interested_team].team.date_registered)
+        date_registered = all_teams_dict[group][interested_team].team.date_registered
         date_value = get_excel_date_serial_value(date_registered)
 
         if date_value not in teams_by_registered_date:
             teams_by_registered_date[date_value] = list()
         teams_by_registered_date[date_value].append(interested_team)
-    
+
     for date_value, team_names in sorted(teams_by_registered_date.items()):
         new_rankings.extend(team_names)
     

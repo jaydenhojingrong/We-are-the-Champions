@@ -47,6 +47,6 @@ def test_tabulate_points():
 
     test_obj = main_services()  
     all_teams_dict = test_obj.enter_result(all_teams_dict, match_result)
-    points_by_group = test_obj.tabulate_points(all_teams_dict, 3, 1, 0)
+    points_by_group = test_obj.tabulate_points(all_teams_dict)
     correct_result = "{'1': {0: ['teamA'], 3: ['teamB']}}"
     assert str(points_by_group) == correct_result
