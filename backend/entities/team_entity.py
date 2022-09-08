@@ -5,4 +5,4 @@ class team_entity():
         self.group = group
 
     def __repr__(self):
-        return f"Team Object: {{name: {self.name}, date: {self.date_registered}, group: {self.group}}}"
+        return f"{self.name}"
