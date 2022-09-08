@@ -38,6 +38,34 @@ class main_services():
             record_match(all_teams_dict, result_data)
         return all_teams_dict
 
+    def tabulate_points(self, all_teams_dict):
+        
+        # create a new dict to store group as keys and points as value in an array
+        # for each key in all_teams_dict
+        # accumulate points.. wins = points + 3 etc
+        
+        points_by_group = dict()
+        for group in all_teams_dict:
+            for team_record in all_teams_dict[group]:
+                team_points = dict()
+                points = int()
+                points += (all_teams_dict[group][team_record].draws)
+                points += (all_teams_dict[group][team_record].wins * 3)
+            
+                if group in points_by_group:
+                    if points in points_by_group[group]:
+                        points_by_group[all_teams_dict[group][team_record].team.group][points].append(all_teams_dict[group][team_record].team.name)
+                    else:
+                        points_by_group[all_teams_dict[group][team_record].team.group][points] = list()
+                        points_by_group[all_teams_dict[group][team_record].team.group][points].append(all_teams_dict[group][team_record].team.name)
+                else:
+                    points_by_group[group] = dict()
+                    points_by_group[group][points] = list()
+                    points_by_group[group][points].append(all_teams_dict[group][team_record].team.name)
+                    
+        return points_by_group
+                
+
 def record_match(all_teams_dict, result_data):
     team1 = result_data[0]
     team2 = result_data[1]
@@ -63,7 +91,6 @@ def record_match(all_teams_dict, result_data):
     # for each participant..
     # for each group.. is the participant inside?
     # if inside.. update the wins/draws/losts field
-    
 
     winner_name = winner[0]
     winner_goals = int(winner[1])
@@ -134,5 +161,9 @@ teamI teamL 1 3
 teamJ teamK 1 4
 teamJ teamL 0 3
 teamK teamL 0 0"""
-    print(obj1.enter_result(all_teams_dict, match_result))
+    all_teams_dict = obj1.enter_result(all_teams_dict, match_result)
+
+    points_by_group = obj1.tabulate_points(all_teams_dict)
+    print(points_by_group)
+
     

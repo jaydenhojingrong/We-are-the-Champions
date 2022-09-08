@@ -35,3 +35,18 @@ def test_enter_result():
 
     correct_result = "{'1': {'teamA': Group Ranking Obj: {teamA, goals: 0, wins: 0, draws: 0, losts: 1}, 'teamB': Group Ranking Obj: {teamB, goals: 1, wins: 1, draws: 0, losts: 0}}}"
     assert str(all_teams_dict) == correct_result
+
+def test_tabulate_points():
+    all_teams_dict = dict()
+    group1_dict = dict()
+    group1_dict["teamA"] = group_ranking_entity(team_entity("teamA", "01/04", "1"))
+    group1_dict["teamB"] = group_ranking_entity(team_entity("teamB", "01/01", "1"))
+    all_teams_dict = {"1": group1_dict}
+    
+    match_result = "teamA teamB 0 1"
+
+    test_obj = main_services()  
+    all_teams_dict = test_obj.enter_result(all_teams_dict, match_result)
+    points_by_group = test_obj.tabulate_points(all_teams_dict)
+    correct_result = "{'1': {0: ['teamA'], 3: ['teamB']}}"
+    assert str(points_by_group) == correct_result
