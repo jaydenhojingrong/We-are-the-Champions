@@ -5,4 +5,4 @@ class group_ranking_entity():
         self.goals = 0
     
     def __repr__(self):
-        return f"|{self.team}, {self.points}, {self.goals}|"
+        return f"Group Ranking Obj: {{{self.team}, points: {self.points}, goals: {self.goals}}}"
