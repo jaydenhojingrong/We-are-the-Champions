@@ -98,21 +98,39 @@ def handle_teams_with_same_points(all_teams_dict, team_names, group):
 
     for goals, team_names in sorted(all_goals.items(), reverse=True):
         if len(team_names) > 1:
-            pass
-            handle_teams_with_same_points_and_goals(all_teams_dict, team_names, group)
-        new_rankings.append(team_names[0])
+            team_names = handle_teams_with_same_points_and_goals(all_teams_dict, team_names, group)
+
+        new_rankings.extend(team_names)
     return new_rankings
 
 def handle_teams_with_same_points_and_goals(all_teams_dict, team_names, group):
     # compare recalculated score
     new_all_teams_dict = dict(all_teams_dict)
-    # new_rankings = list()
-    # service_obj = main_services()
+    new_rankings = list()
+    teams_by_new_points = dict()
+    service_obj = main_services()
 
-    # points_by_group = service_obj.tabulate_points(new_all_teams_dict, 5, 3, 1)
-    # print (points_by_group)
+    # change point system
+    points_by_group = service_obj.tabulate_points(new_all_teams_dict, 5, 3, 1)
+
+    # extract only the teams that we are interested in
+    for interested_team in team_names:
+        for points, new_team_names in points_by_group[group].items():
+            for new_team in new_team_names:
+                if new_team == interested_team:
+                    if points in teams_by_new_points:
+                        teams_by_new_points[points].append(interested_team)
+                    else:
+                        teams_by_new_points[points] = list()
+                        teams_by_new_points[points].append(interested_team)
     
+    for points, team_names in sorted(teams_by_new_points.items(), reverse=True):
+        if len(team_names) > 1:
+            pass
+            # team_names = handle_teams_with_same_points_and_goals_and_new_points(all_teams_dict, team_names, group)
+        new_rankings.extend(team_names)
 
+    return new_rankings
 
 def handle_teams_with_same_points_and_goals_and_new_points(all_teams_dict, team_names, group):
     # compare register date
@@ -218,6 +236,6 @@ teamK teamL 0 0"""
     points_by_group = obj1.tabulate_points(all_teams_dict, 3, 1, 0)
     ranking_by_group = obj1.get_rankings(all_teams_dict, points_by_group)
     print(ranking_by_group)
-    handle_teams_with_same_points_and_goals(all_teams_dict, [], "1")
+    print(handle_teams_with_same_points_and_goals(all_teams_dict, ["teamG", "teamH", "teamI", "teamJ"], "2"))
 
     
