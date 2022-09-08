@@ -1,6 +1,6 @@
 from backend.entities.team_entity import team_entity
 from backend.entities.group_ranking_entity import group_ranking_entity
-import json
+from backend.services.date_service import get_excel_date_serial_value
 
 class main_services():
     
@@ -126,15 +126,35 @@ def handle_teams_with_same_points_and_goals(all_teams_dict, team_names, group):
     
     for points, team_names in sorted(teams_by_new_points.items(), reverse=True):
         if len(team_names) > 1:
-            pass
-            # team_names = handle_teams_with_same_points_and_goals_and_new_points(all_teams_dict, team_names, group)
+            # pass
+            team_names = handle_teams_with_same_points_and_goals_and_new_points(all_teams_dict, team_names, group)
         new_rankings.extend(team_names)
 
     return new_rankings
 
 def handle_teams_with_same_points_and_goals_and_new_points(all_teams_dict, team_names, group):
     # compare register date
-    pass
+    
+    # extract team reg date in all_teams_dict
+    # convert into a int to represent their date value and put them in a dict like: {2332341: ["teamA"], 33434234: ["teamC"]}
+    # sort them into a list
+    # return the list
+    new_rankings = list()
+    teams_by_registered_date = dict()
+    for interested_team in team_names:
+        date_registered = (all_teams_dict[group][interested_team].team.date_registered)
+        date_value = get_excel_date_serial_value(date_registered)
+
+        if date_value in teams_by_registered_date:
+            teams_by_registered_date[date_value].append(interested_team)
+        else:
+            teams_by_registered_date[date_value] = list()
+            teams_by_registered_date[date_value].append(interested_team)
+    
+    for date_value, team_names in sorted(teams_by_registered_date.items()):
+        new_rankings.extend(team_names)
+    
+    return new_rankings
 
 def record_match(all_teams_dict, result_data):
     team1 = result_data[0]
@@ -236,6 +256,8 @@ teamK teamL 0 0"""
     points_by_group = obj1.tabulate_points(all_teams_dict, 3, 1, 0)
     ranking_by_group = obj1.get_rankings(all_teams_dict, points_by_group)
     print(ranking_by_group)
+
+    # testing edge case where same points and goals, thus need to compare by recalculating points and also registered_date
     print(handle_teams_with_same_points_and_goals(all_teams_dict, ["teamG", "teamH", "teamI", "teamJ"], "2"))
 
     
