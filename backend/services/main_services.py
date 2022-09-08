@@ -51,7 +51,7 @@ class main_services():
                 
                 points += (all_teams_dict[group][team_record].wins * win_points)
                 points += (all_teams_dict[group][team_record].draws * draw_points)
-                points += (all_teams_dict[group][team_record].draws * lose__points)
+                points += (all_teams_dict[group][team_record].losts * lose__points)
             
                 if group in points_by_group:
                     if points in points_by_group[group]:
@@ -105,7 +105,14 @@ def handle_teams_with_same_points(all_teams_dict, team_names, group):
 
 def handle_teams_with_same_points_and_goals(all_teams_dict, team_names, group):
     # compare recalculated score
-    pass
+    new_all_teams_dict = dict(all_teams_dict)
+    # new_rankings = list()
+    # service_obj = main_services()
+
+    # points_by_group = service_obj.tabulate_points(new_all_teams_dict, 5, 3, 1)
+    # print (points_by_group)
+    
+
 
 def handle_teams_with_same_points_and_goals_and_new_points(all_teams_dict, team_names, group):
     # compare register date
@@ -211,5 +218,6 @@ teamK teamL 0 0"""
     points_by_group = obj1.tabulate_points(all_teams_dict, 3, 1, 0)
     ranking_by_group = obj1.get_rankings(all_teams_dict, points_by_group)
     print(ranking_by_group)
+    handle_teams_with_same_points_and_goals(all_teams_dict, [], "1")
 
     
