@@ -4,5 +4,9 @@ class team_entity():
         self.date_registered = date_registered
         self.group = group
 
+    def json(self):
+        return {"name": self.name, "date_registered": self.date_registered, "group": self.group}
+
     def __repr__(self):
         return f"{self.name}"
+    

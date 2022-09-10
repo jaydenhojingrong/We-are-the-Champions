@@ -1,5 +1,5 @@
 from backend.entities.team_entity import team_entity
-from backend.entities.group_ranking_entity import group_ranking_entity
+from backend.entities.team_information_entity import team_information_entity
 from backend.services.date_service import get_excel_date_serial_value
 
 class main_services():
@@ -13,7 +13,7 @@ class main_services():
         for team in team_information_arr:
             team_data = team.split()
             team_obj = team_entity(team_data[0], team_data[1], team_data[2])
-            group_ranking_obj = group_ranking_entity(team_obj)
+            group_ranking_obj = team_information_entity(team_obj)
 
             if team_obj.group not in all_teams_dict:
                 all_teams_dict[team_obj.group] = dict()
@@ -30,7 +30,6 @@ class main_services():
         # update the all_teams_dict on the points + goals scored
 
         result_data = list()
-        winner = str()
         match_results_arr = match_results.split("\n")
         for result in match_results_arr:
             result_data = result.split()
@@ -192,6 +191,26 @@ def record_match(all_teams_dict, result_data):
                 all_teams_dict[group][winner_name].wins += 1
                 all_teams_dict[group][loser_name].losts += 1
 
+def dict_with_obj_to_json(all_teams_dict):
+    
+    output = dict()
+    for group, teams in all_teams_dict.items():
+        output[group] = dict()
+        for team in teams:
+            output[group][team] = {"teams": teams[team].team.json(), "goals": teams[team].goals, "wins": teams[team].wins, "draws": teams[team].draws, "losts": teams[team].losts}
+    
+    return output
+
+def json_to_dict_with_obj(all_teams_dict):
+    output = dict()
+    for group, teams in all_teams_dict.items():
+         output[group] = dict()
+         for team in teams:
+            name = all_teams_dict[group][team]["teams"]["name"]
+            date_registered = all_teams_dict[group][team]["teams"]["date_registered"]
+            output[group][team] = team_information_entity(team_entity(name, date_registered, group))
+    
+    return output
 
 if __name__ == "__main__":
     obj1 = main_services()  

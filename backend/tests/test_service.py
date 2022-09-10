@@ -1,5 +1,5 @@
 from backend.services.main_services import main_services
-from backend.entities.group_ranking_entity import group_ranking_entity
+from backend.entities.team_information_entity import team_information_entity
 from backend.entities.team_entity import team_entity
 
 def test_start_game():
@@ -24,8 +24,8 @@ teamL 27/06 2"""
 def test_enter_result():
     all_teams_dict = dict()
     group1_dict = dict()
-    group1_dict["teamA"] = group_ranking_entity(team_entity("teamA", "01/04", "1"))
-    group1_dict["teamB"] = group_ranking_entity(team_entity("teamB", "01/01", "1"))
+    group1_dict["teamA"] = team_information_entity(team_entity("teamA", "01/04", "1"))
+    group1_dict["teamB"] = team_information_entity(team_entity("teamB", "01/01", "1"))
     all_teams_dict = {"1": group1_dict}
     
     match_result = "teamA teamB 0 1"
@@ -39,8 +39,8 @@ def test_enter_result():
 def test_tabulate_points():
     all_teams_dict = dict()
     group1_dict = dict()
-    group1_dict["teamA"] = group_ranking_entity(team_entity("teamA", "01/04", "1"))
-    group1_dict["teamB"] = group_ranking_entity(team_entity("teamB", "01/01", "1"))
+    group1_dict["teamA"] = team_information_entity(team_entity("teamA", "01/04", "1"))
+    group1_dict["teamB"] = team_information_entity(team_entity("teamB", "01/01", "1"))
     all_teams_dict = {"1": group1_dict}
     
     match_result = "teamA teamB 0 1"
