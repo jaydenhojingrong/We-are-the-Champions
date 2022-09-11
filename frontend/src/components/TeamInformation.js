@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import Stack from "@mui/material/Stack"
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const baseURL = "http://127.0.0.1:5000/start_game";
 
@@ -59,7 +60,7 @@ export default function TeamInformation() {
         sx={{px:4, width:"80%"}}> 
         <Stack direction="row" justifyContent="space-between">
           <Button  color="primary"onClick={() => setOpen(state => !open)}> Guide Me</Button>
-          <Button  variant="contained" onClick={startGame}>Enter</Button>
+          <Link to={"/enter_result"}><Button  variant="contained" onClick={startGame}>Enter</Button></Link>
         </Stack>
         <Collapse in={open}>
             <ul>

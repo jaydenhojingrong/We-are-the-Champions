@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from backend.services.main_services import main_services, dict_with_obj_to_json, json_to_dict_with_obj 
 
-app = Flask(__name__ ,static_folder='./frontend/build',static_url_path='')
+app = Flask(__name__ ,static_folder='../../frontend/build',static_url_path='')
 CORS(app)
 
 @app.route('/health_check')
