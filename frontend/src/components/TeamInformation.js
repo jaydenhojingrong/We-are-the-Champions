@@ -4,14 +4,35 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import Stack from "@mui/material/Stack"
+import axios from "axios";
 
-export default function MultilineTextFields() {
-  // const [value, setValue] = useState('Controlled');
+const baseURL = "http://127.0.0.1:5000/start_game";
+
+export default function TeamInformation() {
+  const [post, setPost] = React.useState(null);
   const [open, setOpen] = useState(false);
+  const [value, setValue] = React.useState('Controlled');
 
-  // const handleChange = (event) => {
-  //   setValue(event.target.value);
-  // };
+  const handleChange = (event) => {
+    console.log(value)
+    setValue(event.target.value);
+  };
+
+  function startGame() {
+    const headers = {
+      'Content-Type': 'application/json'
+    }
+    axios.post(baseURL, {
+        team_information: value
+      }, 
+      {
+        headers: headers
+      })
+      .then((response) => {
+        setPost(response.data);
+        console.log(post);
+      });
+  }
 
   return (
     <Box>
@@ -28,6 +49,7 @@ export default function MultilineTextFields() {
   teamA 01/04 1
   teamB 04/04 2"
             minRows={12}
+            onChange={handleChange}
             multiline
             fullWidth
           />
@@ -35,9 +57,9 @@ export default function MultilineTextFields() {
       </Box>
       <Box
         sx={{px:4, width:"80%"}}> 
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" justifyContent="space-between">
           <Button  color="primary"onClick={() => setOpen(state => !open)}> Guide Me</Button>
-          <Button justifyContent="flex-end" variant="contained">Enter</Button>
+          <Button  variant="contained" onClick={startGame}>Enter</Button>
         </Stack>
         <Collapse in={open}>
             <ul>
