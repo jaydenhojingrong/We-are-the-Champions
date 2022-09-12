@@ -7,8 +7,8 @@ import Collapse from '@mui/material/Collapse';
 import Stack from "@mui/material/Stack"
 import { Link } from "react-router-dom";
 
-// const baseURL = "https://we-are-the-champions.herokuapp.com/enter_result";
-const baseURL = "http://127.0.0.1:5000/enter_result";
+const baseURL = "https://we-are-the-champions.herokuapp.com/enter_result";
+// const baseURL = "http://127.0.0.1:5000/enter_result";
 
 export default function MatchInformation(props) {
   
