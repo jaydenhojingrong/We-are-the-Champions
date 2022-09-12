@@ -9,6 +9,10 @@ CORS(app)
 def health_check():
     return '200'
 
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+    
 @app.route('/start_game', methods=['POST'])
 @cross_origin()
 def start_game():
