@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack"
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+// const baseURL = "https://we-are-the-champions.herokuapp.com/start_game";
 const baseURL = "http://127.0.0.1:5000/start_game";
 
 export default function TeamInformation(props) {

@@ -2,6 +2,7 @@ import './App.css';
 import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 import TeamInformation from "./components/TeamInformation" ;
 import MatchInformation from './components/MatchInformation';
+import RankingInformation from './components/RankingInformation';
 import ButtonAppBar from './components/ButtonAppBar';
 import React, {useState} from 'react';
 
@@ -19,7 +20,7 @@ function App() {
       <Routes>
         <Route exact path = "/" element={<TeamInformation teamInformation = {teamInformation} updateTeamInformation = {updateTeamInformation}/>}/>
         <Route path = "/enter_result" element={<MatchInformation teamInformation = {teamInformation} rankingByGroup = {rankingByGroup} updateRankingByGroup = {updateRankingByGroup}/>}/>
-        <Route path = "/rankings" element={<MatchInformation rankingByGroup = {rankingByGroup}/>}/>
+        <Route path = "/rankings" element={<RankingInformation rankingByGroup = {rankingByGroup}/>}/>
       </Routes>
     </Router>
   );

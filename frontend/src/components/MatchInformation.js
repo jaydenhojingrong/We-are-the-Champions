@@ -7,6 +7,7 @@ import Collapse from '@mui/material/Collapse';
 import Stack from "@mui/material/Stack"
 import { Link } from "react-router-dom";
 
+// const baseURL = "https://we-are-the-champions.herokuapp.com/enter_result";
 const baseURL = "http://127.0.0.1:5000/enter_result";
 
 export default function MatchInformation(props) {
@@ -60,7 +61,7 @@ export default function MatchInformation(props) {
         sx={{px:4, width:"80%"}}> 
         <Stack direction="row" justifyContent="space-between">
           <Button  color="primary"onClick={() => setOpenGuide(state => !openGuide)}> Guide Me</Button>
-          <Link to={"/enter_result"} style={{ textDecoration: 'none' }}><Button  variant="contained" onClick={enterResult}>Enter</Button></Link>
+          <Link to={"/rankings"} style={{ textDecoration: 'none' }}><Button  variant="contained" onClick={enterResult}>Enter</Button></Link>
         </Stack>
         <Collapse in={openGuide}>
             <ul>
