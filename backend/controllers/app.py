@@ -32,6 +32,7 @@ def start_game():
         )
 
 @app.route('/enter_result', methods=['POST'])
+@cross_origin()
 def enter_result():
     main_services_obj = main_services()
     points_by_group = dict()

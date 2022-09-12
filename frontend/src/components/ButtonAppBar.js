@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
-
 export default function ButtonAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>

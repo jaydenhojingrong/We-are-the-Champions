@@ -9,13 +9,11 @@ import { Link } from "react-router-dom";
 
 const baseURL = "http://127.0.0.1:5000/start_game";
 
-export default function TeamInformation() {
-  const [post, setPost] = React.useState(null);
+export default function TeamInformation(props) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = React.useState('Controlled');
 
   const handleChange = (event) => {
-    console.log(value)
     setValue(event.target.value);
   };
 
@@ -30,11 +28,9 @@ export default function TeamInformation() {
         headers: headers
       })
       .then((response) => {
-        setPost(response.data);
-        console.log(post);
+        props.updateTeamInformation(response.data.data.team_information)
       });
   }
-
   return (
     <Box>
       <Box
@@ -52,15 +48,14 @@ export default function TeamInformation() {
             minRows={12}
             onChange={handleChange}
             multiline
-            fullWidth
-          />
+            fullWidth/>
 
       </Box>
       <Box
         sx={{px:4, width:"80%"}}> 
         <Stack direction="row" justifyContent="space-between">
           <Button  color="primary"onClick={() => setOpen(state => !open)}> Guide Me</Button>
-          <Link to={"/enter_result"}><Button  variant="contained" onClick={startGame}>Enter</Button></Link>
+          <Link to={"/enter_result"} style={{ textDecoration: 'none' }}><Button  variant="contained" onClick={startGame}>Enter</Button></Link>
         </Stack>
         <Collapse in={open}>
             <ul>
