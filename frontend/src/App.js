@@ -8,13 +8,15 @@ import React, {useState} from 'react';
 
 function App() {
   
-  const [teamInformation, setTeamInformation] = useState({"placeholder": "placeholder"});
+  const [teamInformation, setTeamInformation] = useState({});
   const updateTeamInformation = newTeamInformation => setTeamInformation(newTeamInformation);
 
-  const [rankingByGroup, setRankingByGroup] = useState({"placeholder": "placeholder"});
+  const [rankingByGroup, setRankingByGroup] = useState({});
   const updateRankingByGroup = newRankingByGroup => setRankingByGroup(newRankingByGroup);
-  
+  document.title = "We are the Champions!";
+
   return (
+    
     <Router>
       <Link to={"/"} style={{ textDecoration: 'none' }}><ButtonAppBar /></Link>
       <Routes>
