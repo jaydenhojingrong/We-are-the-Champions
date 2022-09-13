@@ -13,7 +13,7 @@ function App() {
 
   const [rankingByGroup, setRankingByGroup] = useState({"placeholder": "placeholder"});
   const updateRankingByGroup = newRankingByGroup => setRankingByGroup(newRankingByGroup);
-
+  
   return (
     <Router>
       <Link to={"/"} style={{ textDecoration: 'none' }}><ButtonAppBar /></Link>

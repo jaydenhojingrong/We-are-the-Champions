@@ -1,4 +1,4 @@
-import React, {useState}  from 'react'; 
+import React from 'react'; 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,6 +13,10 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import DoneOutlineTwoToneIcon from '@mui/icons-material/DoneOutlineTwoTone';
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
+import CircleIcon from '@mui/icons-material/Circle';
+import Stack from "@mui/material/Stack"
+import { Link } from "react-router-dom";
 
 function createData(rank, result, name) {
     return { rank, result, name };
@@ -150,6 +154,13 @@ export default function RankingInformation(props) {
                         </Table>
                     </TableContainer>
                 </TabPanel>
+                <Box display="flex" justifyContent="center" alignItems="center" sx={{p:2}}>
+                    <Stack direction="row" >
+                        <Link to={"/"} style={{ textDecoration: 'none' }}><CircleOutlinedIcon color='primary' fontSize='small'/></Link>
+                        <Link to={"/enter_result"} style={{ textDecoration: 'none' }}><CircleOutlinedIcon color='primary' fontSize='small'/></Link>
+                        <CircleIcon color='primary' fontSize='small'/>
+                    </Stack>
+                </Box>
             </Box>
         </Box>
         

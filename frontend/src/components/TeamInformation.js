@@ -6,9 +6,12 @@ import Collapse from '@mui/material/Collapse';
 import Stack from "@mui/material/Stack"
 import axios from "axios";
 import { Link } from "react-router-dom";
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
+import CircleIcon from '@mui/icons-material/Circle';
 
-const baseURL = "https://we-are-the-champions.herokuapp.com/start_game";
-// const baseURL = "http://127.0.0.1:5000/start_game";
+
+// const baseURL = "https://we-are-the-champions.herokuapp.com/start_game";
+const baseURL = "http://127.0.0.1:5000/start_game";
 
 export default function TeamInformation(props) {
   const [open, setOpen] = useState(false);
@@ -56,6 +59,11 @@ export default function TeamInformation(props) {
         sx={{px:4, width:"80%"}}> 
         <Stack direction="row" justifyContent="space-between">
           <Button  color="primary"onClick={() => setOpen(state => !open)}> Guide Me</Button>
+          <Stack direction="row" >
+            <CircleIcon color='primary' fontSize='small'/>
+            <CircleOutlinedIcon color='primary' fontSize='small'/>
+            <CircleOutlinedIcon color='primary' fontSize='small'/>
+          </Stack>
           <Link to={"/enter_result"} style={{ textDecoration: 'none' }}><Button  variant="contained" onClick={startGame}>Enter</Button></Link>
         </Stack>
         <Collapse in={open}>

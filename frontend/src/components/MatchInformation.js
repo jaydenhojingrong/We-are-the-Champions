@@ -6,9 +6,11 @@ import TextField from '@mui/material/TextField';
 import Collapse from '@mui/material/Collapse';
 import Stack from "@mui/material/Stack"
 import { Link } from "react-router-dom";
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
+import CircleIcon from '@mui/icons-material/Circle';
 
-const baseURL = "https://we-are-the-champions.herokuapp.com/enter_result";
-// const baseURL = "http://127.0.0.1:5000/enter_result";
+// const baseURL = "https://we-are-the-champions.herokuapp.com/enter_result";
+const baseURL = "http://127.0.0.1:5000/enter_result";
 
 export default function MatchInformation(props) {
   
@@ -61,6 +63,11 @@ export default function MatchInformation(props) {
         sx={{px:4, width:"80%"}}> 
         <Stack direction="row" justifyContent="space-between">
           <Button  color="primary"onClick={() => setOpenGuide(state => !openGuide)}> Guide Me</Button>
+          <Stack direction="row" >
+          <Link to={"/"} style={{ textDecoration: 'none' }}><CircleOutlinedIcon color='primary' fontSize='small'/></Link>
+            <CircleIcon color='primary' fontSize='small'/>
+            <CircleOutlinedIcon color='primary' fontSize='small'/>
+          </Stack>
           <Link to={"/rankings"} style={{ textDecoration: 'none' }}><Button  variant="contained" onClick={enterResult}>Enter</Button></Link>
         </Stack>
         <Collapse in={openGuide}>
