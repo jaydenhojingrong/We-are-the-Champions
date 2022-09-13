@@ -1,10 +1,10 @@
 # TAP 2023 GDS ACE Tech Assessment
 
-Name: Ho Jing Rong (Jayden)
-Linkedin: https://www.linkedin.com/in/jayden-ho/ 
+###### Name: Ho Jing Rong (Jayden)
+###### Linkedin: https://www.linkedin.com/in/jayden-ho/ 
 
 ## What is this?
-First round football championship tracker where 12 teams, split into 2 groups of 6 where each team will play a match against every other team within the same group. Upon adding in team information and match results, the app will display the top 4 teams of each group will then qualify for the next round.
+First round football championship tracker where 12 teams, split into 2 groups of 6 where each team will play a match against every other team within the same group. Upon adding in team information and match results, the app will display the top 4 teams of each group that qualifies for the next round.
 
 ## How to access this?
 https://we-are-the-champions.herokuapp.com/
@@ -27,15 +27,15 @@ You will have to comment some codes and run two things seperately:
 ### Running Backend (port 5000)
 * Open the root folder in a terminal 
 * `pip install requirements.txt`
-* `cd .\backend\`
 * `python -m backend.controllers.app`
 
 #### Running simple unit test cases
 * Open the root folder in a terminal 
 * `python -m pytest`
 
-## Demo and screenshots
+## Product Demo
 [![Watch the video](https://img.youtube.com/vi/aEORRe-aXss/maxresdefault.jpg)](https://youtu.be/aEORRe-aXss)
+*Please click the above image for the product demo*
 
 ## High level walk-through of tech architecture
 ### Backend
