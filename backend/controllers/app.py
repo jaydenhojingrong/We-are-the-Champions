@@ -22,7 +22,18 @@ def start_game():
     data = request.get_json()
     team_information = data["team_information"]
 
-    all_teams_dict = main_services_obj.start_game(team_information)
+    try:
+        all_teams_dict = main_services_obj.start_game(team_information)
+
+    except ValueError as err:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "error_message": err.args
+                }
+            }
+        )
 
     team_information_output = dict_with_obj_to_json(all_teams_dict)
 
@@ -46,20 +57,34 @@ def enter_result():
     match_results = data["match_results"]
     all_teams_dict = data["team_information"]
 
+    
     all_teams_dict = json_to_dict_with_obj(all_teams_dict)
+    
+    try:   
+        all_teams_dict = main_services_obj.enter_result(all_teams_dict, match_results)
 
-    all_teams_dict = main_services_obj.enter_result(all_teams_dict, match_results)
+    except ValueError as err:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "error_message": err.args
+                }
+            }
+        )
+
+
     points_by_group = main_services_obj.tabulate_points(all_teams_dict)
     ranking_by_group = main_services_obj.get_rankings(all_teams_dict, points_by_group)
 
     return jsonify(
-        {
-            "code": 200,
-            "data": {
-                "ranking_by_group": ranking_by_group
+            {
+                "code": 200,
+                "data": {
+                    "ranking_by_group": ranking_by_group
+                }
             }
-        }
-    )
+        )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

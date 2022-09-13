@@ -8,6 +8,7 @@ import Stack from "@mui/material/Stack"
 import { Link } from "react-router-dom";
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import CircleIcon from '@mui/icons-material/Circle';
+import { useNavigate } from "react-router-dom";
 
 // const baseURL = "https://we-are-the-champions.herokuapp.com/enter_result";
 const baseURL = "http://127.0.0.1:5000/enter_result";
@@ -17,6 +18,9 @@ export default function MatchInformation(props) {
   const teamInformation = props.teamInformation;
   const [value, setValue] = React.useState('Controlled');
   const [openGuide, setOpenGuide] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -34,7 +38,14 @@ export default function MatchInformation(props) {
         headers: headers
       })
       .then((response) => {
-        props.updateRankingByGroup(response.data.data.ranking_by_group);
+        if (response.data.code == 500){
+          setIsError(true);
+          setErrorMessage(response.data.data.error_message);
+        }
+        else{
+          props.updateRankingByGroup(response.data.data.ranking_by_group);
+          navigate(`/rankings`);
+        }
       });
   }
   
@@ -47,6 +58,8 @@ export default function MatchInformation(props) {
         alignItems="center"> 
 
         <TextField
+            error={isError}
+            helperText={isError ? errorMessage : ""}
             id="outlined-textarea"
             label="Enter Match Results Here"
             placeholder="e.g. 
@@ -68,13 +81,13 @@ export default function MatchInformation(props) {
             <CircleIcon color='primary' fontSize='small'/>
             <CircleOutlinedIcon color='primary' fontSize='small'/>
           </Stack>
-          <Link to={"/rankings"} style={{ textDecoration: 'none' }}><Button  variant="contained" onClick={enterResult}>Enter</Button></Link>
+          <Button  variant="contained" onClick={enterResult}>Enter</Button>
         </Stack>
         <Collapse in={openGuide}>
             <ul>
               <li>Match Result format must be "Team_name_1 Team_name_2 Team_name_1_score Team_name_2_score"</li>
               <li>Each team is entered in a single line</li>
-              <li>Only teams within the same group can play against each other</li>
+              <li>Each team will play a match against every other team within the same group</li>
             </ul>
           </Collapse>
       </Box>

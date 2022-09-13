@@ -5,17 +5,19 @@ import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import Stack from "@mui/material/Stack"
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import CircleIcon from '@mui/icons-material/Circle';
-
 
 // const baseURL = "https://we-are-the-champions.herokuapp.com/start_game";
 const baseURL = "http://127.0.0.1:5000/start_game";
 
 export default function TeamInformation(props) {
   const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const [value, setValue] = React.useState('Controlled');
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -32,7 +34,15 @@ export default function TeamInformation(props) {
         headers: headers
       })
       .then((response) => {
-        props.updateTeamInformation(response.data.data.team_information)
+        if (response.data.code == 500){
+          setIsError(true);
+          setErrorMessage(response.data.data.error_message);
+        }
+        else{
+          props.updateTeamInformation(response.data.data.team_information);
+          navigate(`/enter_result`);
+        }
+        
       });
   }
   return (
@@ -44,6 +54,8 @@ export default function TeamInformation(props) {
         alignItems="center"> 
 
         <TextField
+            error={isError}
+            helperText={isError ? errorMessage : ""}
             id="outlined-textarea"
             label="Enter Team Information Here"
             placeholder="e.g. 
@@ -64,7 +76,7 @@ export default function TeamInformation(props) {
             <CircleOutlinedIcon color='primary' fontSize='small'/>
             <CircleOutlinedIcon color='primary' fontSize='small'/>
           </Stack>
-          <Link to={"/enter_result"} style={{ textDecoration: 'none' }}><Button  variant="contained" onClick={startGame}>Enter</Button></Link>
+          <Button  variant="contained" onClick={startGame}>Enter</Button>
         </Stack>
         <Collapse in={open}>
             <ul>

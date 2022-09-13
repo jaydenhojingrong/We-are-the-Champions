@@ -9,15 +9,43 @@ class main_services():
         # split again by space
         # [0] = team, [1] = date, [2] = group
         all_teams_dict = dict()
+        date_range = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", '31']
+        group_check_arr = list()
         team_information_arr = team_information.split("\n")
+
+        # check if there are 12 lines. if not? raise exception
+        if len(team_information_arr) != 12:
+            raise ValueError("Only 12 lines are expected.")
+
         for team in team_information_arr:
             team_data = team.split()
+
+            # check if there are 3 items in each line
+            if len(team_data) != 3:
+                raise ValueError("Each line is expected to have 3 items seperated by space.")
+
+            # check date_registered format
+            if team_data[1][2] != "/" or not(team_data[1][:2] in date_range) or not(team_data[1][3:] in date_range[:12]):
+                raise ValueError("Each date value is expected to be in MM/YY format.")
+
+            # check group count, if more than 2 than raise exception
+            if not (team_data[2] in group_check_arr):
+                group_check_arr.append(team_data[2])
+
+                if len(group_check_arr) > 2:
+                    raise ValueError("Only two different groups are expected.")
+                
             team_obj = team_entity(team_data[0], team_data[1], team_data[2])
             group_ranking_obj = team_information_entity(team_obj)
 
             if team_obj.group not in all_teams_dict:
                 all_teams_dict[team_obj.group] = dict()
             all_teams_dict[team_obj.group][group_ranking_obj.team.name] = group_ranking_obj
+
+        # check len of each group, make sure it is 6 each
+        for group in group_check_arr:
+            if len(all_teams_dict[group]) != 6:
+                raise ValueError("Only six teams are expected in each group.")
 
         return all_teams_dict
 
@@ -30,10 +58,30 @@ class main_services():
         # update the all_teams_dict on the points + goals scored
 
         result_data = list()
-        match_results_arr = match_results.split("\n")
+        match_results_arr = match_results.split("\n")   
+
         for result in match_results_arr:
             result_data = result.split()
-            record_match(all_teams_dict, result_data)
+            # check result data before passing to record match
+            if len(result_data) != 4:
+                raise ValueError("Each line is expected to have 4 items seperated by spaces.")
+      
+            if not result_data[2].isdigit() or not result_data[3].isdigit():
+                raise ValueError("Goals for each team is expected to be numeric.")
+            
+            # check if the teams playing with one another are from the same group
+            try:
+                record_match(all_teams_dict, result_data)
+            except ValueError as err:
+                raise err
+
+        # loop the dict key and items
+        # for each group..  
+        # for each item.. does the wins + draws + lost == 5?
+        for group, teams in all_teams_dict.items():
+            for name, team_information in teams.items():
+                if team_information.wins + team_information.draws + team_information.losts != 5:
+                    raise ValueError("Each team is expected to play 5 matches.")
         return all_teams_dict
 
     def tabulate_points(self, all_teams_dict):
@@ -124,7 +172,6 @@ def handle_teams_with_same_points_and_goals(all_teams_dict, team_names, group):
 
 def handle_teams_with_same_points_and_goals_and_new_points(all_teams_dict, team_names, group):
     # compare register date
-    
     # extract team reg date in all_teams_dict
     # convert into a int to represent their date value and put them in a dict like: {2332341: ["teamA"], 33434234: ["teamC"]}
     # sort them into a list
@@ -177,10 +224,13 @@ def record_match(all_teams_dict, result_data):
 
     for group in all_teams_dict:
         if winner_name in all_teams_dict[group]:
-
-            # accmulate goals scored
-            all_teams_dict[group][winner_name].goals += winner_goals
-            all_teams_dict[group][loser_name].goals += loser_goals
+            # if error here, means name cannot be found in the group
+            try:
+                # accmulate goals scored
+                all_teams_dict[group][winner_name].goals += winner_goals
+                all_teams_dict[group][loser_name].goals += loser_goals
+            except:
+                raise ValueError("Teams (entered from the previous page) are expected to play only with other teams from the same group.")
 
             #check if it is a draw
             if is_draw:
