@@ -9,6 +9,10 @@ First round football championship tracker where 12 teams, split into 2 groups of
 ## How to access this?
 https://we-are-the-champions.herokuapp.com/
 
+## Product Demo
+[![Watch the video](https://img.youtube.com/vi/aEORRe-aXss/maxresdefault.jpg)](https://youtu.be/aEORRe-aXss)
+*Please click the above image for the product demo*
+
 ## How do I run this via localhost?
 You will have to comment some codes and run two things seperately:
 * Frontend
@@ -33,15 +37,14 @@ You will have to comment some codes and run two things seperately:
 * Open the root folder in a terminal 
 * `python -m pytest`
 
-## Product Demo
-[![Watch the video](https://img.youtube.com/vi/aEORRe-aXss/maxresdefault.jpg)](https://youtu.be/aEORRe-aXss)
-*Please click the above image for the product demo*
-
 ## High level walk-through of tech architecture
 ### Backend
 * Technologies used: 
     * Flask + Python 
     * pytest (https://docs.pytest.org/en/7.1.x/)
+    * Why?
+        * Lightweight and quicker "time-to-market" (suitable for projects with short timeframe)
+        * Expertise
 * Built using layered architecture (Entities, Services, Controllers) and OOP
     * Benefits:
         * Modularity, thus easier to scale in the future
@@ -52,7 +55,11 @@ You will have to comment some codes and run two things seperately:
 * Technologies used: 
     * ReactJS + JavaScript
     * Material UI (https://mui.com/)
-    
+    *  Why?
+        * Take advantage of existing libraries (in-built designs)     
+        * Handles dependencies, thus lesser issues when deploying 
+        * Potential to scale UI with modular components
+        * Expertise
 ### Cloud Deployment
 * Technologies used: 
     * Heroku (https://heroku.com/)
@@ -84,5 +91,8 @@ You will have to comment some codes and run two things seperately:
 * Absence of database to allow persistent data across system reboots
     * Possibility of using NoSQL DB since the only data that needs to be stored (and is already available) is JSON format
 * Simple redirecting to the index page when user lands directly on to the match_result page or rankings page 
+* Better test scripts
+    * Independent test cases (potential to use fixtures)
+    * Wider coverage of test cases
 # THANK YOU 
 Hope you have enjoyed using this application :)
