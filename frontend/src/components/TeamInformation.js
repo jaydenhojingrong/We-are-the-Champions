@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import CircleIcon from '@mui/icons-material/Circle';
 
-// const baseURL = "https://we-are-the-champions.herokuapp.com/start_game";
-const baseURL = "http://127.0.0.1:5000/start_game";
+const baseURL = "https://we-are-the-champions.herokuapp.com/start_game";
+// const baseURL = "http://127.0.0.1:5000/start_game";
 
 export default function TeamInformation(props) {
   const [open, setOpen] = useState(false);
